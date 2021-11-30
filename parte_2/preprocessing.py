@@ -11,13 +11,19 @@ def preprocess(df:pd.DataFrame):
     
     #Eliminamos todas las filas del dataframe donde haya valores faltantes
     df = df.dropna(subset=['llovieron_hamburguesas_al_dia_siguiente']) 
+    df = df.dropna(subset=['llovieron_hamburguesas_hoy']) 
+
     
     #Eliminamos las dos columnas con mayor porcentaje de missings
     df = df.drop(columns = ['horas_de_sol', 'mm_evaporados_agua']) 
-    
+    #df = df.drop(columns = ['nubosidad_tarde', 'nubosidad_temprano']) 
+
     df = df.drop(columns = ['id'])
     
     #Llenamos las columnas con grandes porcentajes de missings con la mean
+    #df['horas_de_sol'] = df['horas_de_sol'].fillna(df['horas_de_sol'].mean())
+    #df['mm_evaporados_agua'] = df['mm_evaporados_agua'].fillna(df['mm_evaporados_agua'].mean())
+
     df['nubosidad_tarde'] = df['nubosidad_tarde'].fillna(df['nubosidad_tarde'].mean())
     df['nubosidad_temprano'] = df['nubosidad_temprano'].fillna(df['nubosidad_temprano'].mean())
     df['presion_atmosferica_temprano'] = df['presion_atmosferica_temprano'].fillna(df['presion_atmosferica_temprano'].mean())
