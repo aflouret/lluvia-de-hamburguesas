@@ -181,3 +181,23 @@ def preprocessing_arboles_pred(df: pd.DataFrame):
     df = basic_prediction_preprocessing(df)
     df = pd.get_dummies(df, drop_first=True, dummy_na=True, columns=['direccion_viento_temprano', 'rafaga_viento_max_direccion', 'direccion_viento_tarde', 'barrio'])
     return df
+
+def preprocessing_knn_pred(df: pd.DataFrame):
+    df = basic_prediction_preprocessing(df)
+    df = df.drop(columns = ['direccion_viento_temprano', 'rafaga_viento_max_direccion', 'direccion_viento_tarde', 'mes',
+                                      'barrio', 'llovieron_hamburguesas_hoy', 'velocidad_viendo_temprano', 'temperatura_temprano',
+                                      'mm_evaporados_agua'])  
+    
+    features = ['horas_de_sol', 'nubosidad_tarde', 'nubosidad_temprano', 'presion_atmosferica_temprano',
+                'presion_atmosferica_tarde', 'rafaga_viento_max_velocidad', 'humedad_tarde', 'temperatura_tarde', 'mm_lluvia_dia',
+                'velocidad_viendo_tarde', 'humedad_temprano', 'temp_min', 'temp_max']
+    
+    scaler = StandardScaler()
+
+    df[features] = scaler.fit_transform(df[features])
+    return df
+
+def preprocessing_random_forest_pred(df: pd.DataFrame):
+    df = basic_prediction_preprocessing(df)
+    df = pd.get_dummies(df, drop_first=True, dummy_na=True, columns=['direccion_viento_temprano', 'rafaga_viento_max_direccion', 'direccion_viento_tarde', 'barrio'])
+    return df
