@@ -145,6 +145,36 @@ def preprocessing_arboles_4(df:pd.DataFrame):
     return X_train, X_test, y_train, y_test
 
 
+def preprocessing_redes_1(df:pd.DataFrame):
+    X_train, X_test, y_train, y_test = basic_preprocessing(df)
+
+    X_train = pd.get_dummies(X_train, drop_first=True, dummy_na=True, columns=['direccion_viento_temprano', 'rafaga_viento_max_direccion', 'direccion_viento_tarde', 'barrio'])
+    X_test = pd.get_dummies(X_test, drop_first=True, dummy_na=True, columns=['direccion_viento_temprano', 'rafaga_viento_max_direccion', 'direccion_viento_tarde', 'barrio'])
+
+    features = ['horas_de_sol', 'nubosidad_tarde', 'nubosidad_temprano', 'presion_atmosferica_temprano', 'presion_atmosferica_tarde', 'rafaga_viento_max_velocidad', 'humedad_tarde', 'temperatura_tarde', 'mm_lluvia_dia', 'velocidad_viendo_tarde', 'humedad_temprano','temp_min', 'temp_max', 'velocidad_viendo_temprano', 'temperatura_temprano', 'mm_evaporados_agua']
+    
+    scaler = StandardScaler()
+
+    X_train[features] = scaler.fit_transform(X_train[features])
+    X_test[features] = scaler.fit_transform(X_test[features])
+        
+    return X_train, X_test, y_train, y_test
+
+def preprocessing_redes_2(df: pd.DataFrame):
+    X_train, X_test, y_train, y_test = basic_preprocessing(df)
+
+    X_train = X_train.drop(columns = ['direccion_viento_temprano', 'rafaga_viento_max_direccion', 'direccion_viento_tarde', 'mes', 'barrio', 'llovieron_hamburguesas_hoy', 'velocidad_viendo_temprano', 'temperatura_temprano', 'mm_evaporados_agua'])  
+    X_test = X_test.drop(columns = ['direccion_viento_temprano', 'rafaga_viento_max_direccion', 'direccion_viento_tarde', 'mes', 'barrio', 'llovieron_hamburguesas_hoy', 'velocidad_viendo_temprano', 'temperatura_temprano', 'mm_evaporados_agua'])  
+    
+    features = ['horas_de_sol', 'nubosidad_tarde', 'nubosidad_temprano', 'presion_atmosferica_temprano', 'presion_atmosferica_tarde', 'rafaga_viento_max_velocidad', 'humedad_tarde', 'temperatura_tarde', 'mm_lluvia_dia', 'velocidad_viendo_tarde', 'humedad_temprano', 'temp_min', 'temp_max']
+    
+    scaler = StandardScaler()
+
+    X_train[features] = scaler.fit_transform(X_train[features])
+    X_test[features] = scaler.fit_transform(X_test[features])
+        
+    return X_train, X_test, y_train, y_test
+
 def basic_prediction_preprocessing(df: pd.DataFrame, test_size=0.1):
     df['presion_atmosferica_tarde'] = pd.to_numeric(df['presion_atmosferica_tarde'],errors='coerce')    
     df['dia'] = pd.to_datetime(df['dia'])
@@ -193,7 +223,6 @@ def preprocessing_knn_pred(df: pd.DataFrame):
                 'velocidad_viendo_tarde', 'humedad_temprano', 'temp_min', 'temp_max']
     
     scaler = StandardScaler()
-
     df[features] = scaler.fit_transform(df[features])
     return df
 
@@ -205,4 +234,16 @@ def preprocessing_random_forest_pred(df: pd.DataFrame):
 def preprocessing_boosting_pred(df: pd.DataFrame):
     df = basic_prediction_preprocessing(df)
     df = pd.get_dummies(df, drop_first=True, dummy_na=True, columns=['direccion_viento_temprano', 'rafaga_viento_max_direccion', 'direccion_viento_tarde', 'barrio'])
+    return df
+
+def preprocessing_redes_pred(df: pd.DataFrame):
+    df = basic_prediction_preprocessing(df)
+
+
+    df = pd.get_dummies(df, drop_first=True, dummy_na=True, columns=['direccion_viento_temprano', 'rafaga_viento_max_direccion', 'direccion_viento_tarde', 'barrio'])
+    
+    features = ['horas_de_sol', 'nubosidad_tarde', 'nubosidad_temprano', 'presion_atmosferica_temprano', 'presion_atmosferica_tarde', 'rafaga_viento_max_velocidad', 'humedad_tarde', 'temperatura_tarde', 'mm_lluvia_dia', 'velocidad_viendo_tarde', 'humedad_temprano','temp_min', 'temp_max', 'velocidad_viendo_temprano', 'temperatura_temprano', 'mm_evaporados_agua']
+    
+    scaler = StandardScaler()
+    df[features] = scaler.fit_transform(df[features])
     return df
