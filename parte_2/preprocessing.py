@@ -201,3 +201,8 @@ def preprocessing_random_forest_pred(df: pd.DataFrame):
     df = basic_prediction_preprocessing(df)
     df = pd.get_dummies(df, drop_first=True, dummy_na=True, columns=['direccion_viento_temprano', 'rafaga_viento_max_direccion', 'direccion_viento_tarde', 'barrio'])
     return df
+
+def preprocessing_boosting_pred(df: pd.DataFrame):
+    df = basic_prediction_preprocessing(df)
+    df = pd.get_dummies(df, drop_first=True, dummy_na=True, columns=['direccion_viento_temprano', 'rafaga_viento_max_direccion', 'direccion_viento_tarde', 'barrio'])
+    return df
